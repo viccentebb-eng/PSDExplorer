@@ -1,0 +1,18 @@
+PSD Explorer 1.1.2
+
+- Corrige el texto mojibake (CachÃ©, DiagnÃ³stico, TamaÃ±o) compilando todo el proyecto como UTF-8.
+- Añade verificación real de activación COM; ya no confunde "clave escrita" con "handler funcional".
+- Registra el handler también sobre el ProgID efectivo de Photoshop sin cambiar la aplicación predeterminada, para desplazar codecs viejos/rotos que puedan tener precedencia.
+- Detecta REGDB_E_CLASSNOTREG (0x80040154) antes de procesar cientos de archivos.
+- Verifica que la DLL copiada sea byte por byte igual a la DLL que se está instalando.
+- Diagnóstico de miniatura en tres pasos: activación COM, proveedor directo y Explorer/caché.
+- Añade icono en la bandeja del sistema con estado de procesamiento y notificación al finalizar.
+- Cambia los símbolos de estado del listado por OK / ERROR para evitar problemas de glifos.
+- Mantiene el inspector PSD/PSB y el preprocesador de carpetas de 1.1.0.
+- Añade UPDATE_AND_BUILD.cmd y workflow de GitHub Actions para trabajar por git pull en vez de ZIPs manuales.
+
+
+Fix de compilación 1.1.2:
+- Se incluyen thumbcache.h para IThumbnailProvider y WTS_ALPHATYPE.
+- Se incluye shlwapi.h para SHCreateStreamOnFileEx.
+- DllGetClassObject/DllCanUnloadNow se marcan PRIVATE en el .def para eliminar LNK4104.
