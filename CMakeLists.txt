@@ -41,4 +41,13 @@ if(WIN32)
   target_include_directories(PSDExplorerSetup PRIVATE src)
   target_compile_definitions(PSDExplorerSetup PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
   target_link_libraries(PSDExplorerSetup PRIVATE psdcore shell32 shlwapi advapi32 comctl32 user32 gdi32 ole32)
+
+  # Small elevated helper. Explorer's isolated thumbnail host can fail to see a
+  # per-user InprocServer32 registration on some Windows 11 configurations.
+  # The helper copies only the Shell DLL to Program Files and registers the CLSIDs
+  # at machine scope after the user accepts the normal UAC prompt.
+  add_executable(PSDExplorerAdmin WIN32 manager/admin.cpp)
+  target_include_directories(PSDExplorerAdmin PRIVATE src)
+  target_compile_definitions(PSDExplorerAdmin PRIVATE UNICODE _UNICODE WIN32_LEAN_AND_MEAN NOMINMAX)
+  target_link_libraries(PSDExplorerAdmin PRIVATE shell32 advapi32 user32)
 endif()
