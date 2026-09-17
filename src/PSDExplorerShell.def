@@ -1,0 +1,4 @@
+LIBRARY "PSDExplorerShell"
+EXPORTS
+    DllGetClassObject PRIVATE
+    DllCanUnloadNow PRIVATE
