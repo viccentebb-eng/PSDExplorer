@@ -1,0 +1,30 @@
+name: Windows x64 build
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S . -B build-win -A x64 -DPSD_EXPLORER_BUILD_TESTS=ON
+      - name: Build
+        run: cmake --build build-win --config Release --parallel
+      - name: Test
+        run: ctest --test-dir build-win -C Release --output-on-failure
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item dist -ItemType Directory -Force | Out-Null
+          Copy-Item build-win/Release/PSDExplorerShell.dll dist/
+          Copy-Item build-win/Release/PSDExplorerSetup.exe dist/
+          Copy-Item README.md dist/
+          Copy-Item CHANGES-1.1.2.txt dist/
+          Compress-Archive -Path dist/* -DestinationPath PSDExplorer-1.1.2-win-x64.zip -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PSDExplorer-1.1.2-win-x64
+          path: PSDExplorer-1.1.2-win-x64.zip
